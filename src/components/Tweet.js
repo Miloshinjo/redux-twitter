@@ -1,29 +1,49 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
+import ArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline'
+import HeartOutline from 'react-icons/lib/ti/heart-outline'
+import HeartFullOutline from 'react-icons/lib/ti/heart-full-outline'
 
-const Tweet = ({ author, text, avatarURL, timestamp, replyingTo }) => (
+const Tweet = ({ author, text, avatarURL, date, originalAuthor, hasLiked, numberOfLikes }) => (
   <div className='tweet'>
-    <img src={avatarURL} alt={`Avatar for ${author}`} />
-    <h3 className='tweet__author'>{author}</h3>
-    <h4 className='tweet__timestamp'>{timestamp}</h4>
-    {replyingTo
-      ? <div className='tweet__replyingTo'>Replying to: @{replyingTo}</div>
-      : null}
+    <div className='tweet__left'>
+      <img className='tweet__avatar' src={avatarURL} alt={`Avatar for ${author}`} />
+    </div>
+    <div className='tweet__right'>
+      <h3 className='tweet__author'>{author}</h3>
+      <h4 className='tweet__date'>{date}</h4>
+      {originalAuthor
+        ? <div className='tweet__original-author'>Replying to: @{originalAuthor}</div>
+        : null}
+      <p className='tweet__text'>{text}</p>
+      <div className='tweet__icons'>
+        <ArrowBackOutline className='tweet__icon'/>
+        {hasLiked ? <HeartFullOutline className='tweet__icon' style={{color: 'red'}}/> : <HeartOutline className='tweet__icon'/>}
+        <span className='tweet__num-likes'>{numberOfLikes > 0 && numberOfLikes}</span>
+      </div>
+    </div>
   </div>
 )
 
-const mapStateToProps = ({ tweets, users }, { id }) => {
+const mapStateToProps = ({ tweets, users, authedUser }, { id }) => {
   const text = tweets[id].text
-  const timestamp = tweets[id].timestamp
-  const author = tweets[id].author
-  const avatarURL = users[author].avatarURL
-  const replyingTo = tweets[id].replyingTo
+  const date = moment(tweets[id].timestamp).format("HH:mm | M/D/YYYY")
+  const author = users[tweets[id].author].name
+  const avatarURL = users[tweets[id].author].avatarURL
+  const replyingToTweetId = tweets[id].replyingTo
+  const originalAuthor = replyingToTweetId ? tweets[replyingToTweetId].author : null
+  const hasLiked = tweets[id].likes.includes(authedUser)
+  const numberOfLikes = tweets[id].likes.length
+
   return {
     author,
     text,
-    timestamp,
+    date,
     avatarURL,
-    replyingTo
+    originalAuthor,
+    hasLiked,
+    numberOfLikes
   }
 }
 

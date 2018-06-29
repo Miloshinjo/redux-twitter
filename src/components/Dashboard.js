@@ -5,9 +5,9 @@ import Tweet from './Tweet'
 
 
 const Dashboard = ({ tweetIds }) => (
-  <div>
-    <h1>Your Timeline</h1>
-    <ul>
+  <div className='dashboard'>
+    <h1 className='dashboard__title'>Your Timeline</h1>
+    <ul className='dashboard__tweets'>
       {tweetIds.map((tweetId) => ( <li key={tweetId}><Tweet id={tweetId}/></li> ))}
     </ul>
   </div>
