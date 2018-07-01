@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import { Link, withRouter } from 'react-router-dom'
 import { handleLikeTweet } from '../actions/tweets'
 import ArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline'
 import HeartOutline from 'react-icons/lib/ti/heart-outline'
@@ -17,31 +18,41 @@ const Tweet = ({
   numberOfReplies,
   authedUser,
   id,
-  dispatch
+  dispatch,
+  replyingToTweetId,
+  history
 }) => {
-  const likeTweet = () => dispatch(handleLikeTweet({ id, hasLiked, authedUser} ))
+  const likeTweet = (e) => {
+    e.preventDefault()
+    dispatch(handleLikeTweet({ id, hasLiked, authedUser}))
+  }
+
+  const toParent = (e) => {
+    e.preventDefault()
+    history.push(`/tweet/${replyingToTweetId}`)
+  }
   return (
-    <div className='tweet'>
-      <div className='tweet__left'>
-        <img className='tweet__avatar' src={avatarURL} alt={`Avatar for ${author}`} />
-      </div>
-      <div className='tweet__right'>
-        <h3 className='tweet__author'>{author}</h3>
-        <h4 className='tweet__date'>{date}</h4>
-        {originalAuthor
-          ? <div className='tweet__original-author'>Replying to: @{originalAuthor}</div>
-          : null}
-        <p className='tweet__text'>{text}</p>
-        <div className='tweet__icons'>
-          <ArrowBackOutline className='tweet__icon'/>
-          <span className='tweet__num-likes'>{numberOfReplies > 0 && numberOfReplies}</span>
-          {hasLiked
-            ? <HeartFullOutline onClick={likeTweet} className='tweet__icon' style={{color: 'red'}}/>
-            : <HeartOutline  onClick={likeTweet} className='tweet__icon'/>}
-          <span className='tweet__num-likes'>{numberOfLikes > 0 && numberOfLikes}</span>
+    <Link to={`/tweet/${id}`} className='tweet'>
+          <div className='tweet__left'>
+          <img className='tweet__avatar' src={avatarURL} alt={`Avatar for ${author}`} />
         </div>
-      </div>
-    </div>
+        <div className='tweet__right'>
+          <h3 className='tweet__author'>{author}</h3>
+          <h4 className='tweet__date'>{date}</h4>
+          {originalAuthor
+            ? <div onClick={toParent} className='tweet__original-author'>Replying to: @{originalAuthor}</div>
+            : null}
+          <p className='tweet__text'>{text}</p>
+          <div className='tweet__icons'>
+            <ArrowBackOutline className='tweet__icon'/>
+            <span className='tweet__num-likes'>{numberOfReplies > 0 && numberOfReplies}</span>
+            {hasLiked
+              ? <HeartFullOutline onClick={likeTweet} className='tweet__icon' style={{color: 'red'}}/>
+              : <HeartOutline  onClick={likeTweet} className='tweet__icon'/>}
+            <span className='tweet__num-likes'>{numberOfLikes > 0 && numberOfLikes}</span>
+          </div>
+        </div>
+    </Link>
   )
 }
 
@@ -65,8 +76,9 @@ const mapStateToProps = ({ tweets, users, authedUser }, { id }) => {
     hasLiked,
     numberOfLikes,
     numberOfReplies,
-    authedUser
+    authedUser,
+    replyingToTweetId
   }
 }
 
-export default connect(mapStateToProps)(Tweet)
+export default withRouter(connect(mapStateToProps)(Tweet))

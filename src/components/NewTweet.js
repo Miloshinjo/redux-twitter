@@ -1,10 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { handleAddTweet } from '../actions/tweets'
+import { withRouter } from 'react-router-dom'
 
 class NewTweet extends React.Component {
   state = {
     text: ''
+  }
+
+  componentDidMount () {
+    console.log(this.props)
   }
 
   handleChange = (e) => {
@@ -18,7 +23,7 @@ class NewTweet extends React.Component {
 
     this.props.dispatch(handleAddTweet(this.state.text, this.props.replyingTo))
 
-    // history.push to '/'
+    this.props.history.push('/')
   }
   render() {
     return (
@@ -36,5 +41,5 @@ class NewTweet extends React.Component {
 }
 
 
-  export default connect()(NewTweet)
+  export default withRouter(connect()(NewTweet))
 

@@ -3,12 +3,11 @@ import { connect } from 'react-redux'
 import Tweet from './Tweet'
 
 
-
 const Dashboard = ({ tweetIds }) => (
   <div className='dashboard'>
     <h2 className='page-title'>Your Timeline</h2>
     <ul className='dashboard__tweets'>
-      {tweetIds.map((tweetId) => ( <li key={tweetId}><Tweet id={tweetId}/></li> ))}
+      {tweetIds.map((tweetId) => ( <li key={tweetId}> <Tweet id={tweetId}/></li> ))}
     </ul>
   </div>
 

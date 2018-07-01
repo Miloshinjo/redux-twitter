@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import Tweet from './Tweet'
 import NewTweet from './NewTweet'
 
+
 const TweetPage = (props) => (
   <div className='tweet-page'>
     <Tweet id={props.match.params.id}/>
     <NewTweet replyingTo={props.match.params.id}/>
-    {props.replies.map((reply) => <Tweet id={reply} />)}
+    {props.replies.map((reply) => <Tweet key={reply} id={reply} />)}
   </div>
 )
 

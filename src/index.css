@@ -42,6 +42,8 @@ button {
   display: flex;
   width: 30vw;
   margin-bottom: 2rem;
+  text-decoration: none;
+  color: #272727;
 }
 
 .tweet__left {
@@ -119,5 +121,29 @@ button {
   align-items: center;
   padding: 4rem;
 }
+
+/* ------------------------ NAVBAR -----------------------------*/
+
+.nav-bar {
+  margin: 1rem auto;
+  width: 114rem;
+  display: flex;
+}
+
+.nav-bar__list {
+  display: flex;
+}
+
+.nav-bar__link {
+  text-decoration: none;
+  color: #292929;
+  margin-right: 4rem;
+}
+
+.nav-active {
+  font-weight: bold;
+}
+
+
 
 
