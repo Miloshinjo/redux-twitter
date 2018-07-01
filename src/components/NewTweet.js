@@ -16,7 +16,7 @@ class NewTweet extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
 
-    this.props.dispatch(handleAddTweet(this.state.text))
+    this.props.dispatch(handleAddTweet(this.state.text, this.props.replyingTo))
 
     // history.push to '/'
   }

@@ -6,7 +6,19 @@ import ArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline'
 import HeartOutline from 'react-icons/lib/ti/heart-outline'
 import HeartFullOutline from 'react-icons/lib/ti/heart-full-outline'
 
-const Tweet = ({ author, text, avatarURL, date, originalAuthor, hasLiked, numberOfLikes, authedUser, id, dispatch }) => {
+const Tweet = ({
+  author,
+  text,
+  avatarURL,
+  date,
+  originalAuthor,
+  hasLiked,
+  numberOfLikes,
+  numberOfReplies,
+  authedUser,
+  id,
+  dispatch
+}) => {
   const likeTweet = () => dispatch(handleLikeTweet({ id, hasLiked, authedUser} ))
   return (
     <div className='tweet'>
@@ -22,6 +34,7 @@ const Tweet = ({ author, text, avatarURL, date, originalAuthor, hasLiked, number
         <p className='tweet__text'>{text}</p>
         <div className='tweet__icons'>
           <ArrowBackOutline className='tweet__icon'/>
+          <span className='tweet__num-likes'>{numberOfReplies > 0 && numberOfReplies}</span>
           {hasLiked
             ? <HeartFullOutline onClick={likeTweet} className='tweet__icon' style={{color: 'red'}}/>
             : <HeartOutline  onClick={likeTweet} className='tweet__icon'/>}
@@ -41,6 +54,7 @@ const mapStateToProps = ({ tweets, users, authedUser }, { id }) => {
   const originalAuthor = replyingToTweetId ? tweets[replyingToTweetId].author : null
   const hasLiked = tweets[id].likes.includes(authedUser)
   const numberOfLikes = tweets[id].likes.length
+  const numberOfReplies = tweets[id].replies.length
 
   return {
     author,
@@ -50,6 +64,7 @@ const mapStateToProps = ({ tweets, users, authedUser }, { id }) => {
     originalAuthor,
     hasLiked,
     numberOfLikes,
+    numberOfReplies,
     authedUser
   }
 }
